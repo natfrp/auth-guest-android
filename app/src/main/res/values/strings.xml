@@ -14,8 +14,8 @@
     </string>
     <string name="configure">配置名称</string>
     <string name="widget_name">AuthWidget</string>
-    <string name="widget_addr">隧道地址</string>
-    <string name="widget_port">隧道端口</string>
+    <string name="widget_addr">隧道 IP 地址, 如 1.2.3.4</string>
+    <string name="widget_port">隧道端口, 如 12345</string>
     <string name="widget_pass">隧道访问密码</string>
     <string name="add_widget">添加微件</string>
     <string name="app_widget_description">此微件用于快速执行 SakuraFrp 访问认证</string>
