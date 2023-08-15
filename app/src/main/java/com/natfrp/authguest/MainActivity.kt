@@ -1,5 +1,6 @@
 package com.natfrp.authguest
 
+import android.Manifest
 import android.content.pm.PackageManager
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
@@ -19,21 +20,38 @@ class MainActivity : AppCompatActivity() {
 
         if (ContextCompat.checkSelfPermission(
                 this,
-                "Manifest.permission.POST_NOTIFICATIONS"
+                Manifest.permission.POST_NOTIFICATIONS
             )
             != PackageManager.PERMISSION_GRANTED
         ) {
             ActivityCompat.requestPermissions(
-                this, arrayOf("android.permission.POST_NOTIFICATIONS"), 0
+                this, arrayOf(Manifest.permission.POST_NOTIFICATIONS), 0
             )
             if (ContextCompat.checkSelfPermission(
                     this,
-                    "Manifest.permission.POST_NOTIFICATIONS"
+                    Manifest.permission.POST_NOTIFICATIONS
                 )
                 != PackageManager.PERMISSION_GRANTED
             ) {
                 binding.textviewFirst.setText(R.string.req_perm)
             }
+        } else {
+            binding.textviewFirst.setText(R.string.usage_info)
         }
+    }
+
+    override fun onResume() {
+        if (ContextCompat.checkSelfPermission(
+                this,
+                Manifest.permission.POST_NOTIFICATIONS
+            )
+            != PackageManager.PERMISSION_GRANTED
+        ) {
+            binding.textviewFirst.setText(R.string.req_perm)
+        } else {
+            binding.textviewFirst.setText(R.string.usage_info)
+        }
+
+        super.onResume()
     }
 }
