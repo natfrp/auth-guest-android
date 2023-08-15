@@ -52,5 +52,17 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.1")
     implementation("com.google.android.material:material:1.9.0")
     implementation("androidx.appcompat:appcompat:1.6.1")
+    implementation("androidx.activity:activity-ktx:1.7.2")
     implementation("com.squareup.okhttp3:okhttp:4.11.0")
+
+    implementation("androidx.camera:camera-mlkit-vision:1.2.0-beta02")
+    implementation("androidx.constraintlayout:constraintlayout:2.1.4")
+
+    val cameraxVersion = "1.2.3"
+    implementation( "androidx.camera:camera-core:${cameraxVersion}")
+    implementation ("androidx.camera:camera-camera2:${cameraxVersion}")
+    implementation ("androidx.camera:camera-lifecycle:${cameraxVersion}")
+    implementation ("androidx.camera:camera-view:${cameraxVersion}")
+
+    implementation("com.google.mlkit:barcode-scanning:17.2.0")
 }

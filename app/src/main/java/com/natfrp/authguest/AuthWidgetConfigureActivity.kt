@@ -4,14 +4,22 @@ import android.app.Activity
 import android.appwidget.AppWidgetManager
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.EditText
+import android.widget.Toast
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AppCompatActivity
 import com.natfrp.authguest.databinding.AuthWidgetConfigureBinding
+import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
 
 /**
  * The configuration screen for the [AuthWidget] AppWidget.
  */
-class AuthWidgetConfigureActivity : Activity() {
+class AuthWidgetConfigureActivity : AppCompatActivity() {
+    private val TAG = "AuthWidgetConfigureActivity"
+
     private var appWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID
     private lateinit var appWidgetName: EditText
     private lateinit var widgetAddr: EditText
@@ -50,11 +58,12 @@ class AuthWidgetConfigureActivity : Activity() {
         binding = AuthWidgetConfigureBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        appWidgetName = binding.appwidgetName
-        widgetAddr = binding.widgetAddr
-        widgetPort = binding.widgetPort
-        widgetPass = binding.widgetPass
+        appWidgetName = binding.appwidgetName.editText!!
+        widgetAddr = binding.widgetAddr.editText!!
+        widgetPort = binding.widgetPort.editText!!
+        widgetPass = binding.widgetPass.editText!!
         binding.addButton.setOnClickListener(onClickListener)
+        binding.fab.setOnClickListener(scanCodeClick)
 
         // Find the widget id from the intent.
         val intent = intent
@@ -71,9 +80,42 @@ class AuthWidgetConfigureActivity : Activity() {
             return
         }
 
-        appWidgetName.setText(AuthWidgetManager.loadPrefName(this@AuthWidgetConfigureActivity, appWidgetId))
+        appWidgetName.setText(
+            AuthWidgetManager.loadPrefName(
+                this@AuthWidgetConfigureActivity,
+                appWidgetId
+            )
+        )
     }
 
+    private val scanCodeStart =
+        this.registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult? ->
+            if (result?.resultCode == Activity.RESULT_OK) {
+                result.data?.let { data: Intent ->
+                    val value = data.getStringExtra("url") ?: ""
+                    Log.d(TAG, "get qrcode result: $value")
+                    val url = value.toHttpUrlOrNull()
+                    if (url == null) {
+                        Toast.makeText(this, "扫码内容不合法", Toast.LENGTH_SHORT).show()
+                        return@let
+                    }
+                    val addr = url.queryParameter("addr")
+                    if (url.host != "ag.natfrp" || addr == null) {
+                        Toast.makeText(this, "扫码内容无效", Toast.LENGTH_SHORT).show()
+                        return@let
+                    }
+                    appWidgetName.setText(url.username)
+                    widgetAddr.setText(addr)
+                    widgetPort.setText(url.port.toString())
+                    widgetPass.setText(url.password)
+                }
+            }
+        }
+
+    private var scanCodeClick = View.OnClickListener {
+        val context = this@AuthWidgetConfigureActivity
+        scanCodeStart.launch(Intent(context, WidgetQrScanActivity::class.java))
+    }
 }
 
 

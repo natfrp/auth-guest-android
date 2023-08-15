@@ -19,4 +19,5 @@
     <string name="widget_pass">隧道访问密码</string>
     <string name="add_widget">添加微件</string>
     <string name="app_widget_description">此微件用于快速执行 SakuraFrp 访问认证</string>
+    <string name="btn_scan">扫码载入配置</string>
 </resources>
