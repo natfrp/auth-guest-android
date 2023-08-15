@@ -1,0 +1,22 @@
+<resources>
+    <string name="app_name">AuthWidgets</string>
+    <string name="full_name">SakuraFrp AuthPanel GuestWidgets</string>
+
+    <string name="usage_info">
+        \t\t感谢您使用 SakuraFrp AuthPanel GuestWidgets,
+        此工具被设计用于简化您的访问认证流程。\n\n
+        \t\t本 App 直接打开无功能, 请在主屏幕或负一屏长按添加微件使用。
+    </string>
+    <string name="req_perm">
+        请您打开通知权限, 本应用不会推送通知, 但需要此权限发送 Toast 消息以正常工作。\n\n
+        请您打开通知权限, 本应用不会推送通知, 但需要此权限发送 Toast 消息以正常工作。\n\n
+        请您打开通知权限, 本应用不会推送通知, 但需要此权限发送 Toast 消息以正常工作。\n\n
+    </string>
+    <string name="configure">配置名称</string>
+    <string name="widget_name">AuthWidget</string>
+    <string name="widget_addr">隧道地址</string>
+    <string name="widget_port">隧道端口</string>
+    <string name="widget_pass">隧道访问密码</string>
+    <string name="add_widget">添加微件</string>
+    <string name="app_widget_description">此微件用于快速执行 SakuraFrp 访问认证</string>
+</resources>

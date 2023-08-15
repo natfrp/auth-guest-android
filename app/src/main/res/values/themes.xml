@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="Theme.SakuraFrpAuthPanelGuestTool" parent="android:Theme.Material.Light.NoActionBar" />
+    <!-- Base application theme. -->
+    <style name="Base.Theme.SakuraFrpAuthPanelGuestTool" parent="Theme.Material3.DayNight.NoActionBar">
+        <!-- Customize your light theme here. -->
+    </style>
+
+    <style name="Theme.SakuraFrpAuthPanelGuestTool.AppWidgetContainerParent" parent="Theme.SakuraFrpAuthPanelGuestTool">
+        <!-- Radius of the outer bound of widgets to make the rounded corners -->
+        <item name="appWidgetRadius">8dp</item>
+        <!--
+        Radius of the inner view's bound of widgets to make the rounded corners.
+        It needs to be 8dp or less than the value of appWidgetRadius
+        -->
+        <item name="appWidgetInnerRadius">4dp</item>
+    </style>
+
+    <style name="Theme.SakuraFrpAuthPanelGuestTool.AppWidgetContainer" parent="Theme.SakuraFrpAuthPanelGuestTool.AppWidgetContainerParent">
+        <!-- Apply padding to avoid the content of the widget colliding with the rounded corners -->
+        <item name="appWidgetPadding">8dp</item>
+    </style>
+</resources>

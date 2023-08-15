@@ -1,0 +1,16 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/Widget.SakuraFrpAuthPanelGuestTool.AppWidget.Container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:theme="@style/Theme.SakuraFrpAuthPanelGuestTool.AppWidgetContainer">
+
+    <TextView
+        android:id="@+id/widget_name"
+        style="@style/Widget.SakuraFrpAuthPanelGuestTool.AppWidget.InnerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerInParent="true"
+        android:textSize="12sp"
+        android:textStyle="bold"
+        android:autoSizeTextType="uniform" />
+</RelativeLayout>

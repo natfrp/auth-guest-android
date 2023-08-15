@@ -1,0 +1,12 @@
+<resources>
+
+    <style name="Widget.SakuraFrpAuthPanelGuestTool.AppWidget.Container" parent="android:Widget">
+        <item name="android:id">@android:id/background</item>
+        <item name="android:background">?android:attr/colorBackground</item>
+    </style>
+
+    <style name="Widget.SakuraFrpAuthPanelGuestTool.AppWidget.InnerView" parent="android:Widget">
+        <item name="android:background">?android:attr/colorBackground</item>
+        <item name="android:textColor">#001E2C</item>
+    </style>
+</resources>
