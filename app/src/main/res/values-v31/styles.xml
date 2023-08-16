@@ -9,8 +9,8 @@
 
     <style name="Widget.SakuraFrpAuthPanelGuestTool.AppWidget.InnerView" parent="android:Widget">
         <item name="android:padding">?attr/appWidgetPadding</item>
-        <item name="android:background">@drawable/app_widget_inner_view_background</item>
-        <item name="android:textColor">@color/material_dynamic_primary90</item>
+        <item name="android:background">?android:attr/colorBackground</item>
+        <item name="android:textColor">?android:attr/colorAccent</item>
         <item name="android:clipToOutline">true</item>
     </style>
 </resources>
