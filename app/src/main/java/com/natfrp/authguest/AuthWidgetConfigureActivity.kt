@@ -103,7 +103,7 @@ class AuthWidgetConfigureActivity : AppCompatActivity() {
                         return@let
                     }
                     val addr = url.queryParameter("addr")
-                    if (url.host != "ag.natfrp" || addr == null) {
+                    if (url.host != "natfrp.com" || addr == null) {
                         Toast.makeText(this, "扫码内容无效", Toast.LENGTH_SHORT).show()
                         return@let
                     }
