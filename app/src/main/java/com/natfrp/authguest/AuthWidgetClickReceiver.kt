@@ -1,11 +1,14 @@
 package com.natfrp.authguest
 
+import android.Manifest
 import android.annotation.SuppressLint
 import android.appwidget.AppWidgetManager
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.net.Uri
+import android.os.Build
 import android.util.Log
 import android.widget.Toast
 import androidx.core.content.ContextCompat
@@ -60,6 +63,31 @@ class AuthWidgetClickReceiver : BroadcastReceiver() {
         ContextCompat.getMainExecutor(context).execute {
             Toast.makeText(context, text, duration).show()
         }
+    }
+
+    private fun startUrl(context: Context, url: String) {
+        val uri = Uri.parse(url)
+        var intent :Intent?
+        if (uri.scheme == "open-app" && uri.host != null) {
+            val pm = context.packageManager
+            intent = pm.getLaunchIntentForPackage(uri.host!!)
+            if (intent != null) {
+                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+                context.startActivity(intent)
+            } else {
+                toast(context, "无法打开后续 app", Toast.LENGTH_SHORT)
+                return
+            }
+        } else if (uri.scheme == "open-activity" && uri.host != null && uri.path != null) {
+            intent = Intent()
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+            intent.setClassName(uri.host!!, uri.path!!.trim('/'))
+        } else {
+            intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+            context.startActivity(intent)
+        }
+        context.startActivity(intent)
     }
 
     private fun req(context: Context, intent: Intent) {
@@ -170,20 +198,14 @@ class AuthWidgetClickReceiver : BroadcastReceiver() {
                     )
                     AuthWidgetManager.loadCallback(context, widgetId).let { url ->
                         if (url != "") {
-                            val urlIntent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
-                            urlIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-                            context.startActivity(urlIntent)
+                            startUrl(context, url)
                             return@use
                         }
                     }
                     if (notice.startsWith("认证成功, 正在为您跳转到后续链接")) {
                         val m = redirRe.matcher(resp)
                         if (m.find()) {
-                            m.group(1).let { url ->
-                                val urlIntent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
-                                urlIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-                                context.startActivity(urlIntent)
-                            }
+                            m.group(1)?.let { startUrl(context, it) }
                         }
                     }
                 } else {
