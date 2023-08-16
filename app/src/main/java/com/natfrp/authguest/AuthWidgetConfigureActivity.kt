@@ -104,10 +104,10 @@ class AuthWidgetConfigureActivity : AppCompatActivity() {
                         Toast.makeText(this, "扫码内容无效", Toast.LENGTH_SHORT).show()
                         return@let
                     }
-                    appWidgetName.setText(url.username)
+                    appWidgetName.setText(url.queryParameter("name"))
                     widgetAddr.setText(addr)
-                    widgetPort.setText(url.port.toString())
-                    widgetPass.setText(url.password)
+                    widgetPort.setText(url.queryParameter("port"))
+                    widgetPass.setText(url.queryParameter("pw"))
                 }
             }
         }
