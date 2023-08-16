@@ -168,6 +168,14 @@ class AuthWidgetClickReceiver : BroadcastReceiver() {
                         "$name 认证成功",
                         Toast.LENGTH_SHORT
                     )
+                    AuthWidgetManager.loadCallback(context, widgetId).let { url ->
+                        if (url != "") {
+                            val urlIntent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+                            urlIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+                            context.startActivity(urlIntent)
+                            return@use
+                        }
+                    }
                     if (notice.startsWith("认证成功, 正在为您跳转到后续链接")) {
                         val m = redirRe.matcher(resp)
                         if (m.find()) {
@@ -175,7 +183,7 @@ class AuthWidgetClickReceiver : BroadcastReceiver() {
                                 val urlIntent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
                                 urlIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
                                 context.startActivity(urlIntent)
-                             }
+                            }
                         }
                     }
                 } else {

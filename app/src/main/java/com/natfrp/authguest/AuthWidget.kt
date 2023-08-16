@@ -36,6 +36,7 @@ private const val PREF_PREFIX_KEY = "appwidget_"
 private const val PREF_ADDR = "_addr"
 private const val PREF_PORT = "_port"
 private const val PREF_PASS = "_pass"
+private const val PREF_CB = "_cb"
 
 class AuthWidgetManager {
     companion object {
@@ -77,13 +78,15 @@ class AuthWidgetManager {
             name: String,
             addr: String,
             port: String,
-            pass: String
+            pass: String,
+            callback: String
         ) {
             val prefs = context.getSharedPreferences(PREFS_NAME, 0).edit()
             prefs.putString(PREF_PREFIX_KEY + appWidgetId, name)
             prefs.putString(PREF_PREFIX_KEY + appWidgetId + PREF_ADDR, addr)
             prefs.putInt(PREF_PREFIX_KEY + appWidgetId + PREF_PORT, port.toInt())
             prefs.putString(PREF_PREFIX_KEY + appWidgetId + PREF_PASS, pass)
+            prefs.putString(PREF_PREFIX_KEY + appWidgetId + PREF_CB, callback)
             prefs.apply()
         }
 
@@ -101,6 +104,11 @@ class AuthWidgetManager {
                 prefs.getInt(PREF_PREFIX_KEY + appWidgetId + PREF_PORT, 0),
                 prefs.getString(PREF_PREFIX_KEY + appWidgetId + PREF_PASS, "") ?: return null
             )
+        }
+
+        fun loadCallback(context: Context, appWidgetId: Int): String {
+            val prefs = context.getSharedPreferences(PREFS_NAME, 0)
+            return prefs.getString(PREF_PREFIX_KEY + appWidgetId + PREF_CB, "") ?: ""
         }
 
         fun deletePref(context: Context, appWidgetId: Int) {

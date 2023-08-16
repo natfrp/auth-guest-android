@@ -25,6 +25,7 @@ class AuthWidgetConfigureActivity : AppCompatActivity() {
     private lateinit var widgetAddr: EditText
     private lateinit var widgetPort: EditText
     private lateinit var widgetPass: EditText
+    private lateinit var widgetCall: EditText
     private var onClickListener = View.OnClickListener {
         val context = this@AuthWidgetConfigureActivity
 
@@ -34,7 +35,8 @@ class AuthWidgetConfigureActivity : AppCompatActivity() {
             appWidgetName.text.toString(),
             widgetAddr.text.toString(),
             widgetPort.text.toString(),
-            widgetPass.text.toString()
+            widgetPass.text.toString(),
+            widgetCall.text.toString()
         )
 
         val appWidgetManager = AppWidgetManager.getInstance(context)
@@ -62,6 +64,7 @@ class AuthWidgetConfigureActivity : AppCompatActivity() {
         widgetAddr = binding.widgetAddr.editText!!
         widgetPort = binding.widgetPort.editText!!
         widgetPass = binding.widgetPass.editText!!
+        widgetCall = binding.widgetCall.editText!!
         binding.addButton.setOnClickListener(onClickListener)
         binding.fab.setOnClickListener(scanCodeClick)
 
@@ -108,6 +111,7 @@ class AuthWidgetConfigureActivity : AppCompatActivity() {
                     widgetAddr.setText(addr)
                     widgetPort.setText(url.queryParameter("port"))
                     widgetPass.setText(url.queryParameter("pw"))
+                    widgetCall.setText(url.queryParameter("cb"))
                 }
             }
         }
