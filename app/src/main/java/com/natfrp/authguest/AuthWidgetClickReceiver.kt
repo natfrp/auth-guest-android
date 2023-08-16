@@ -5,6 +5,7 @@ import android.appwidget.AppWidgetManager
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.util.Log
 import android.widget.Toast
 import androidx.core.content.ContextCompat
@@ -19,8 +20,9 @@ import java.security.cert.X509Certificate
 import java.util.concurrent.TimeUnit
 import java.util.regex.Pattern
 import javax.net.ssl.SSLContext
-import javax.net.ssl.X509TrustManager
 import javax.net.ssl.TrustManager
+import javax.net.ssl.X509TrustManager
+
 
 fun OkHttpClient.Builder.ignoreAllSSLErrors(): OkHttpClient.Builder {
     val naiveTrustManager = @SuppressLint("CustomX509TrustManager")
@@ -52,6 +54,7 @@ class AuthWidgetClickReceiver : BroadcastReceiver() {
     private val getRe =
         Pattern.compile("(?s).*name=\"csrf\" value=\"(?<csrf>.*?)\".*name=\"ip\" value=\"(?<ip>.*?)\".*")
     private val noticeRe = Pattern.compile("(?s).*<div class=\"notice\">(.*?)</div>.*")
+    private val redirRe = Pattern.compile("(?s)window.location = \"(.*?)\"")
 
     private fun toast(context: Context, text: String, duration: Int) {
         ContextCompat.getMainExecutor(context).execute {
@@ -165,6 +168,16 @@ class AuthWidgetClickReceiver : BroadcastReceiver() {
                         "$name 认证成功",
                         Toast.LENGTH_SHORT
                     )
+                    if (notice.startsWith("认证成功, 正在为您跳转到后续链接")) {
+                        val m = redirRe.matcher(resp)
+                        if (m.find()) {
+                            m.group(1).let { url ->
+                                val urlIntent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
+                                urlIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+                                context.startActivity(urlIntent)
+                             }
+                        }
+                    }
                 } else {
                     toast(
                         context,
