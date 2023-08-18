@@ -74,6 +74,7 @@ class AuthWidgetConfigureActivity : AppCompatActivity() {
         widgetCall = binding.widgetCall.editText!!
         widgetTotp = binding.widgetTotp.editText!!
         widgetPersist = binding.widgetPersist
+        widgetAlwaysCb = binding.widgetAlwayscb
         binding.addButton.setOnClickListener(onClickListener)
         binding.fab.setOnClickListener(scanCodeClick)
 

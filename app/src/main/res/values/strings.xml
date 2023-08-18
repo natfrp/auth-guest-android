@@ -1,6 +1,5 @@
 <resources>
     <string name="app_name">AuthWidgets</string>
-    <string name="full_name">SakuraFrp AuthPanel GuestWidgets</string>
 
     <string name="usage_info">
         \t\t感谢您使用 SakuraFrp AuthPanel GuestWidgets,

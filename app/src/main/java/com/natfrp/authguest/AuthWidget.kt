@@ -135,4 +135,4 @@ class AuthRequest(
     val totp: String,
     val persist: Boolean,
     val alwaysCb: Boolean
-) {}
+)

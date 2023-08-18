@@ -1,6 +1,7 @@
 package com.natfrp.authguest
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageInfo
@@ -60,7 +61,7 @@ class AppSelectActivity : AppCompatActivity() {
             }
     }
 
-    fun loadPackages() {
+    private fun loadPackages() {
         val prefs = PreferenceManager.getDefaultSharedPreferences(this)
         val allPackages: List<PackageInfo> = this.packageManager.getInstalledPackages(0)
 
@@ -70,6 +71,7 @@ class AppSelectActivity : AppCompatActivity() {
             val parts: List<String> = langPref.split("_")
             val locale = Locale(parts[0], parts[1])
             Locale.setDefault(locale)
+            @SuppressLint("AppBundleLocaleChanges")
             config.locale = locale
         }
 
@@ -105,7 +107,7 @@ class AppSelectActivity : AppCompatActivity() {
     }
 }
 
-private class AppItem() {
+private class AppItem {
     lateinit var name: String
     lateinit var packageName: String
     lateinit var icon: Drawable
