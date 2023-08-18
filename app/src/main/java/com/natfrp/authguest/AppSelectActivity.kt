@@ -88,7 +88,7 @@ class AppSelectActivity : AppCompatActivity() {
                         try {
                             pi.applicationInfo.nonLocalizedLabel.toString()
                         } catch (_: Exception) {
-                            pi.packageName
+                            "_未知 APP_"
                         }
                     }
 
