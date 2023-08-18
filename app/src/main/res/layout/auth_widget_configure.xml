@@ -75,6 +75,14 @@
             android:layout_height="wrap_content" />
     </com.google.android.material.textfield.TextInputLayout>
 
+    <com.google.android.material.materialswitch.MaterialSwitch
+        android:id="@+id/widget_persist"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:checked="true"
+        android:layout_marginTop="8dp"
+        android:text="@string/widget_persist" />
+
     <Button
         android:id="@+id/add_button"
         style="@style/Widget.Material3.Button"
@@ -98,6 +106,8 @@
             android:text="@string/btn_scan"
             app:icon="@drawable/baseline_qr_code_scanner_24" />
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+
 
 
 </LinearLayout>

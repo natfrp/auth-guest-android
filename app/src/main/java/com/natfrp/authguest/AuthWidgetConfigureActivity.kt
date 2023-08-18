@@ -27,6 +27,7 @@ class AuthWidgetConfigureActivity : AppCompatActivity() {
     private lateinit var widgetPort: EditText
     private lateinit var widgetPass: EditText
     private lateinit var widgetCall: EditText
+    private lateinit var widgetPersist: com.google.android.material.materialswitch.MaterialSwitch
     private var onClickListener = View.OnClickListener {
         val context = this@AuthWidgetConfigureActivity
 
@@ -37,7 +38,8 @@ class AuthWidgetConfigureActivity : AppCompatActivity() {
             widgetAddr.text.toString(),
             widgetPort.text.toString(),
             widgetPass.text.toString(),
-            widgetCall.text.toString()
+            widgetCall.text.toString(),
+            widgetPersist.isChecked
         )
 
         val appWidgetManager = AppWidgetManager.getInstance(context)
@@ -66,6 +68,7 @@ class AuthWidgetConfigureActivity : AppCompatActivity() {
         widgetPort = binding.widgetPort.editText!!
         widgetPass = binding.widgetPass.editText!!
         widgetCall = binding.widgetCall.editText!!
+        widgetPersist = binding.widgetPersist
         binding.addButton.setOnClickListener(onClickListener)
         binding.fab.setOnClickListener(scanCodeClick)
 

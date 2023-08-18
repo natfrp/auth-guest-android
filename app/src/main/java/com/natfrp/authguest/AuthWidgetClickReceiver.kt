@@ -67,7 +67,7 @@ class AuthWidgetClickReceiver : BroadcastReceiver() {
 
     private fun startUrl(context: Context, url: String) {
         val uri = Uri.parse(url)
-        var intent :Intent?
+        var intent: Intent?
         if (uri.scheme == "open-app" && uri.host != null) {
             val pm = context.packageManager
             intent = pm.getLaunchIntentForPackage(uri.host!!)
@@ -105,10 +105,10 @@ class AuthWidgetClickReceiver : BroadcastReceiver() {
         }
 
         val url: HttpUrl = try {
-            "https://${reqData.first}:${reqData.second}".toHttpUrlOrNull().let { u1 ->
-                u1 ?: "https://${reqData.first}".toHttpUrlOrNull()
-                ?: "${reqData.first}:${reqData.second}".toHttpUrlOrNull()
-                ?: reqData.first.toHttpUrlOrNull() ?: "".toHttpUrl()
+            "https://${reqData.addr}:${reqData.port}".toHttpUrlOrNull().let { u1 ->
+                u1 ?: "https://${reqData.addr}".toHttpUrlOrNull()
+                ?: "${reqData.addr}:${reqData.port}".toHttpUrlOrNull()
+                ?: reqData.addr.toHttpUrlOrNull() ?: "".toHttpUrl()
             }
         } catch (_: IllegalArgumentException) {
             toast(context, "$name 请求失败, Url 不合法", Toast.LENGTH_SHORT)
@@ -147,8 +147,8 @@ class AuthWidgetClickReceiver : BroadcastReceiver() {
 
 
         val postBody: FormBody = FormBody.Builder().let { b ->
-            b.add("pw", reqData.third)
-            b.add("persist_auth", "on")
+            b.add("pw", reqData.pw)
+            b.add("persist_auth", if (reqData.persist) "on" else "off")
             b.build()
         }
         val request = Request.Builder()
@@ -196,11 +196,9 @@ class AuthWidgetClickReceiver : BroadcastReceiver() {
                         "$name 认证成功",
                         Toast.LENGTH_SHORT
                     )
-                    AuthWidgetManager.loadCallback(context, widgetId).let { url ->
-                        if (url != "") {
-                            startUrl(context, url)
-                            return@use
-                        }
+                    if (reqData.callback != "") {
+                        startUrl(context, reqData.callback)
+                        return@use
                     }
                     if (notice.startsWith("认证成功, 正在为您跳转到后续链接")) {
                         val m = redirRe.matcher(resp)

@@ -36,6 +36,7 @@ private const val PREF_PREFIX_KEY = "appwidget_"
 private const val PREF_ADDR = "_addr"
 private const val PREF_PORT = "_port"
 private const val PREF_PASS = "_pass"
+private const val PREF_PERSIST = "_pers"
 private const val PREF_CB = "_cb"
 
 class AuthWidgetManager {
@@ -79,7 +80,8 @@ class AuthWidgetManager {
             addr: String,
             port: String,
             pass: String,
-            callback: String
+            callback: String,
+            persist: Boolean
         ) {
             val prefs = context.getSharedPreferences(PREFS_NAME, 0).edit()
             prefs.putString(PREF_PREFIX_KEY + appWidgetId, name)
@@ -87,6 +89,7 @@ class AuthWidgetManager {
             prefs.putInt(PREF_PREFIX_KEY + appWidgetId + PREF_PORT, port.toInt())
             prefs.putString(PREF_PREFIX_KEY + appWidgetId + PREF_PASS, pass)
             prefs.putString(PREF_PREFIX_KEY + appWidgetId + PREF_CB, callback)
+            prefs.putBoolean(PREF_PREFIX_KEY + appWidgetId + PREF_PERSIST, persist)
             prefs.apply()
         }
 
@@ -96,19 +99,16 @@ class AuthWidgetManager {
             return titleValue ?: context.getString(R.string.widget_name)
         }
 
-        fun loadPrefReq(context: Context, appWidgetId: Int): Triple<String, Int, String>? {
+        fun loadPrefReq(context: Context, appWidgetId: Int): AuthRequest? {
             val prefs = context.getSharedPreferences(PREFS_NAME, 0)
             prefs.getString(PREF_PREFIX_KEY + appWidgetId, null) ?: return null
-            return Triple(
+            return AuthRequest(
                 prefs.getString(PREF_PREFIX_KEY + appWidgetId + PREF_ADDR, "") ?: return null,
                 prefs.getInt(PREF_PREFIX_KEY + appWidgetId + PREF_PORT, 0),
-                prefs.getString(PREF_PREFIX_KEY + appWidgetId + PREF_PASS, "") ?: return null
+                prefs.getString(PREF_PREFIX_KEY + appWidgetId + PREF_PASS, "") ?: return null,
+                prefs.getString(PREF_PREFIX_KEY + appWidgetId + PREF_CB, "") ?: return null,
+                prefs.getBoolean(PREF_PREFIX_KEY + appWidgetId + PREF_PERSIST, true)
             )
-        }
-
-        fun loadCallback(context: Context, appWidgetId: Int): String {
-            val prefs = context.getSharedPreferences(PREFS_NAME, 0)
-            return prefs.getString(PREF_PREFIX_KEY + appWidgetId + PREF_CB, "") ?: ""
         }
 
         fun deletePref(context: Context, appWidgetId: Int) {
@@ -119,3 +119,10 @@ class AuthWidgetManager {
     }
 }
 
+class AuthRequest(
+    val addr: String,
+    val port: Int,
+    val pw: String,
+    val callback: String,
+    val persist: Boolean
+) {}
