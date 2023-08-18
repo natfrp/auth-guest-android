@@ -1,14 +1,11 @@
 package com.natfrp.authguest
 
-import android.Manifest
 import android.annotation.SuppressLint
 import android.appwidget.AppWidgetManager
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.net.Uri
-import android.os.Build
 import android.util.Log
 import android.widget.Toast
 import androidx.core.content.ContextCompat
@@ -67,7 +64,7 @@ class AuthWidgetClickReceiver : BroadcastReceiver() {
 
     private fun startUrl(context: Context, url: String) {
         val uri = Uri.parse(url)
-        var intent: Intent?
+        val intent: Intent?
         if (uri.scheme == "open-app" && uri.host != null) {
             val pm = context.packageManager
             intent = pm.getLaunchIntentForPackage(uri.host!!)
@@ -181,6 +178,9 @@ class AuthWidgetClickReceiver : BroadcastReceiver() {
                         "$name 认证失败, ${response.code}",
                         Toast.LENGTH_SHORT
                     )
+                    if (reqData.alwaysCb && reqData.callback != "") {
+                        startUrl(context, reqData.callback)
+                    }
                     return
                 }
 
@@ -194,6 +194,9 @@ class AuthWidgetClickReceiver : BroadcastReceiver() {
                         "$name 返回不正确, 可能已经通过认证?",
                         Toast.LENGTH_SHORT
                     )
+                    if (reqData.alwaysCb && reqData.callback != "") {
+                        startUrl(context, reqData.callback)
+                    }
                     return
                 }
                 val n = noticeMatch.group(1)
@@ -203,6 +206,9 @@ class AuthWidgetClickReceiver : BroadcastReceiver() {
                         "$name 返回不正确, 可能已经通过认证?",
                         Toast.LENGTH_SHORT
                     )
+                    if (reqData.alwaysCb && reqData.callback != "") {
+                        startUrl(context, reqData.callback)
+                    }
                     return
                 } else {
                     n.trim()
@@ -235,6 +241,9 @@ class AuthWidgetClickReceiver : BroadcastReceiver() {
         } catch (e: Exception) {
             Log.e(TAG, "page post failed: $e")
             toast(context, "$name 请求失败, ${e.localizedMessage}", Toast.LENGTH_SHORT)
+            if (reqData.alwaysCb && reqData.callback != "") {
+                startUrl(context, reqData.callback)
+            }
             return
         }
     }

@@ -3,7 +3,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginTop="20dp"
     android:orientation="vertical"
     android:padding="16dp">
 
@@ -11,7 +10,7 @@
         android:id="@+id/appwidget_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
+        android:layout_marginBottom="4dp"
         android:hint="@string/configure"
         app:endIconMode="clear_text">
 
@@ -24,7 +23,7 @@
         android:id="@+id/widget_addr"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
+        android:layout_marginBottom="4dp"
         android:hint="@string/widget_addr"
         app:endIconMode="clear_text">
 
@@ -37,7 +36,7 @@
         android:id="@+id/widget_port"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
+        android:layout_marginBottom="4dp"
         android:hint="@string/widget_port"
         app:endIconMode="clear_text">
 
@@ -50,7 +49,7 @@
         android:id="@+id/widget_pass"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
+        android:layout_marginBottom="4dp"
         android:hint="@string/widget_pass"
         app:endIconMode="password_toggle">
 
@@ -64,7 +63,7 @@
         android:id="@+id/widget_call"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
+        android:layout_marginBottom="4dp"
         android:hint="@string/widget_call"
         app:endIconContentDescription="@string/end_icon_app_select"
         app:endIconDrawable="@drawable/baseline_app_registration_24"
@@ -79,7 +78,7 @@
         android:id="@+id/widget_totp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
+        android:layout_marginBottom="4dp"
         android:hint="@string/widget_totp">
 
         <com.google.android.material.textfield.TextInputEditText
@@ -94,6 +93,13 @@
         android:layout_marginTop="8dp"
         android:checked="true"
         android:text="@string/widget_persist" />
+
+    <com.google.android.material.materialswitch.MaterialSwitch
+        android:id="@+id/widget_alwayscb"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:checked="true"
+        android:text="@string/widget_alwayscb" />
 
     <Button
         android:id="@+id/add_button"
