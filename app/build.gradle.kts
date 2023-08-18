@@ -5,7 +5,7 @@ plugins {
 
 android {
     namespace = "com.natfrp.authguest"
-    compileSdk = 33
+    compileSdk = 34
 
     defaultConfig {
         applicationId = "com.natfrp.authguest"
@@ -55,7 +55,7 @@ android {
 }
 
 dependencies {
-    implementation("androidx.core:core-ktx:1.9.0")
+    implementation("androidx.core:core-ktx:1.10.1")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.1")
     implementation("com.google.android.material:material:1.9.0")
     implementation("androidx.appcompat:appcompat:1.6.1")
@@ -63,7 +63,7 @@ dependencies {
     implementation("net.nicbell.material-lists:listitem:0.1.1")
     implementation("com.squareup.okhttp3:okhttp:4.11.0")
 
-    implementation("androidx.camera:camera-mlkit-vision:1.2.0-beta02")
+    implementation("androidx.camera:camera-mlkit-vision:1.3.0-beta02")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
 
     val cameraxVersion = "1.2.3"
