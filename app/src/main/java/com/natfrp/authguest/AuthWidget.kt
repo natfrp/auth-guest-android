@@ -38,6 +38,7 @@ private const val PREF_PORT = "_port"
 private const val PREF_PASS = "_pass"
 private const val PREF_PERSIST = "_pers"
 private const val PREF_CB = "_cb"
+private const val PREF_TOTP = "_totp"
 
 class AuthWidgetManager {
     companion object {
@@ -81,6 +82,7 @@ class AuthWidgetManager {
             port: String,
             pass: String,
             callback: String,
+            totp: String,
             persist: Boolean
         ) {
             val prefs = context.getSharedPreferences(PREFS_NAME, 0).edit()
@@ -89,6 +91,7 @@ class AuthWidgetManager {
             prefs.putInt(PREF_PREFIX_KEY + appWidgetId + PREF_PORT, port.toInt())
             prefs.putString(PREF_PREFIX_KEY + appWidgetId + PREF_PASS, pass)
             prefs.putString(PREF_PREFIX_KEY + appWidgetId + PREF_CB, callback)
+            prefs.putString(PREF_PREFIX_KEY + appWidgetId + PREF_TOTP, totp)
             prefs.putBoolean(PREF_PREFIX_KEY + appWidgetId + PREF_PERSIST, persist)
             prefs.apply()
         }
@@ -107,6 +110,7 @@ class AuthWidgetManager {
                 prefs.getInt(PREF_PREFIX_KEY + appWidgetId + PREF_PORT, 0),
                 prefs.getString(PREF_PREFIX_KEY + appWidgetId + PREF_PASS, "") ?: return null,
                 prefs.getString(PREF_PREFIX_KEY + appWidgetId + PREF_CB, "") ?: return null,
+                prefs.getString(PREF_PREFIX_KEY + appWidgetId + PREF_TOTP, "") ?: return null,
                 prefs.getBoolean(PREF_PREFIX_KEY + appWidgetId + PREF_PERSIST, true)
             )
         }
@@ -124,5 +128,6 @@ class AuthRequest(
     val port: Int,
     val pw: String,
     val callback: String,
+    val totp: String,
     val persist: Boolean
 ) {}

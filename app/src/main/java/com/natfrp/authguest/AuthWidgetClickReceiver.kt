@@ -90,6 +90,23 @@ class AuthWidgetClickReceiver : BroadcastReceiver() {
         context.startActivity(intent)
     }
 
+    private fun totpCode(u: String): String? {
+        if (u.isEmpty()) return null
+
+        val url: Uri =
+            Uri.parse(if (u.startsWith("otpauth://")) u else "otpauth://totp/auto?secret=$u")
+                ?: return null
+        val totp = TotpUtils(
+            url.getQueryParameter("algorithm").let { it ?: "SHA1" },
+            url.getQueryParameter("secret").let { it ?: return null },
+            url.getQueryParameter("digits")
+                .let { if (it == null || it.toIntOrNull() == null) 6 else it.toInt() },
+            url.getQueryParameter("period")
+                .let { if (it == null || it.toIntOrNull() == null) 30 else it.toInt() },
+        )
+        return totp.genCode()
+    }
+
     private fun req(context: Context, intent: Intent) {
         val widgetId = intent.getIntExtra(
             AppWidgetManager.EXTRA_APPWIDGET_ID,
@@ -149,6 +166,7 @@ class AuthWidgetClickReceiver : BroadcastReceiver() {
         val postBody: FormBody = FormBody.Builder().let { b ->
             b.add("pw", reqData.pw)
             b.add("persist_auth", if (reqData.persist) "on" else "off")
+            totpCode(reqData.totp)?.let { b.add("totp", it) }
             b.build()
         }
         val request = Request.Builder()

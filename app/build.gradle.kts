@@ -63,14 +63,16 @@ dependencies {
     implementation("net.nicbell.material-lists:listitem:0.1.1")
     implementation("com.squareup.okhttp3:okhttp:4.11.0")
 
+    // QRCode Scan
     implementation("androidx.camera:camera-mlkit-vision:1.3.0-beta02")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
-
     val cameraxVersion = "1.2.3"
     implementation( "androidx.camera:camera-core:${cameraxVersion}")
     implementation ("androidx.camera:camera-camera2:${cameraxVersion}")
     implementation ("androidx.camera:camera-lifecycle:${cameraxVersion}")
     implementation ("androidx.camera:camera-view:${cameraxVersion}")
-
     implementation("com.google.mlkit:barcode-scanning:17.2.0")
+
+    // TOTP
+    implementation("commons-codec:commons-codec:1.16.0")
 }
