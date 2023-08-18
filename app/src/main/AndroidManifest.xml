@@ -5,6 +5,8 @@
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.QUERY_ALL_PACKAGES"
+        tools:ignore="QueryAllPackagesPermission" />
 
     <uses-feature android:name="android.hardware.camera.any" />
 
@@ -18,8 +20,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.SakuraFrpAuthPanelGuestTool"
-        android:extractNativeLibs="true"
         tools:targetApi="33">
+        <activity
+            android:name=".AppSelectActivity"
+            android:exported="false" />
         <activity
             android:name=".WidgetQrScanActivity"
             android:exported="false" />

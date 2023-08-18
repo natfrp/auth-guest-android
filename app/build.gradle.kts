@@ -60,6 +60,7 @@ dependencies {
     implementation("com.google.android.material:material:1.9.0")
     implementation("androidx.appcompat:appcompat:1.6.1")
     implementation("androidx.activity:activity-ktx:1.7.2")
+    implementation("net.nicbell.material-lists:listitem:0.1.1")
     implementation("com.squareup.okhttp3:okhttp:4.11.0")
 
     implementation("androidx.camera:camera-mlkit-vision:1.2.0-beta02")

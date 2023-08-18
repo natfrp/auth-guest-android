@@ -1,5 +1,6 @@
 package com.natfrp.authguest
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.appwidget.AppWidgetManager
 import android.content.Intent
@@ -89,6 +90,9 @@ class AuthWidgetConfigureActivity : AppCompatActivity() {
                 appWidgetId
             )
         )
+        binding.widgetCall.setEndIconOnClickListener {
+            listAppStart.launch(Intent(this, AppSelectActivity::class.java))
+        }
     }
 
     private val scanCodeStart =
@@ -117,9 +121,22 @@ class AuthWidgetConfigureActivity : AppCompatActivity() {
         }
 
     private var scanCodeClick = View.OnClickListener {
-        val context = this@AuthWidgetConfigureActivity
-        scanCodeStart.launch(Intent(context, WidgetQrScanActivity::class.java))
+        scanCodeStart.launch(Intent(this, WidgetQrScanActivity::class.java))
     }
+
+    private val listAppStart =
+        this.registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult? ->
+            if (result?.resultCode == Activity.RESULT_OK) {
+                result.data?.let { data: Intent ->
+                    val value = data.getStringExtra("appPackageName") ?: ""
+                    Log.d(TAG, "received $value")
+                    @SuppressLint("SetTextI18n")
+                    if (value != "") {
+                        widgetCall.setText("open-app://$value")
+                    }
+                }
+            }
+        }
 }
 
 

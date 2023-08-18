@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_marginTop="40dp"
     android:orientation="vertical"
     android:padding="16dp">
@@ -12,7 +12,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
-        android:hint="@string/configure">
+        android:hint="@string/configure"
+        app:endIconMode="clear_text">
 
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
@@ -24,7 +25,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
-        android:hint="@string/widget_addr">
+        android:hint="@string/widget_addr"
+        app:endIconMode="clear_text">
 
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
@@ -36,7 +38,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
-        android:hint="@string/widget_port">
+        android:hint="@string/widget_port"
+        app:endIconMode="clear_text">
 
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
@@ -48,11 +51,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
-        android:hint="@string/widget_pass">
+        android:hint="@string/widget_pass"
+        app:endIconMode="password_toggle">
 
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:inputType="textPassword" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
@@ -60,7 +65,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
-        android:hint="@string/widget_call">
+        android:hint="@string/widget_call"
+        app:endIconContentDescription="@string/end_icon_app_select"
+        app:endIconDrawable="@drawable/baseline_app_registration_24"
+        app:endIconMode="custom">
 
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
@@ -87,8 +95,8 @@
             android:layout_gravity="end|bottom"
             android:layout_margin="16dp"
             android:contentDescription="@string/btn_scan"
-            app:icon="@drawable/baseline_qr_code_scanner_24"
-            android:text="@string/btn_scan" />
+            android:text="@string/btn_scan"
+            app:icon="@drawable/baseline_qr_code_scanner_24" />
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
 
