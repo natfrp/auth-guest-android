@@ -115,14 +115,14 @@ class AuthWidgetConfigureActivity : AppCompatActivity() {
                         return@let
                     }
                     val addr = url.queryParameter("addr")
-                    if (url.host != "natfrp.com" || addr == null) {
+                    if (!url.host.endsWith("natfrp.com") || addr == null) {
                         Toast.makeText(this, "扫码内容无效", Toast.LENGTH_SHORT).show()
                         return@let
                     }
                     appWidgetName.setText(url.queryParameter("name"))
                     widgetAddr.setText(addr)
                     widgetPort.setText(url.queryParameter("port"))
-                    widgetPass.setText(url.queryParameter("pw"))
+                    widgetPass.setText(url.queryParameter("pass"))
                     widgetCall.setText(url.queryParameter("cb"))
                     widgetTotp.setText(url.queryParameter("totp"))
                 }
