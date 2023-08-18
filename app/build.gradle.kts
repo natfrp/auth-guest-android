@@ -18,12 +18,10 @@ android {
             useSupportLibrary = true
         }
 
-            ndk {
-                abiFilters.clear()
-                abiFilters.add("arm64-v8a")
-                 abiFilters.add("x86")
-            }
-
+        ndk {
+            abiFilters.clear()
+            abiFilters.add("arm64-v8a")
+        }
     }
 
     buildTypes {
@@ -35,6 +33,11 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+        }
+        debug {
+            ndk {
+                abiFilters.add("x86")
+            }
         }
     }
     compileOptions {
@@ -67,11 +70,22 @@ dependencies {
     implementation("androidx.camera:camera-mlkit-vision:1.3.0-beta02")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
     val cameraxVersion = "1.2.3"
-    implementation( "androidx.camera:camera-core:${cameraxVersion}")
-    implementation ("androidx.camera:camera-camera2:${cameraxVersion}")
-    implementation ("androidx.camera:camera-lifecycle:${cameraxVersion}")
-    implementation ("androidx.camera:camera-view:${cameraxVersion}")
-    implementation("com.google.mlkit:barcode-scanning:17.2.0")
+    implementation("androidx.camera:camera-core:${cameraxVersion}")
+    implementation("androidx.camera:camera-camera2:${cameraxVersion}")
+    implementation("androidx.camera:camera-lifecycle:${cameraxVersion}")
+    implementation("androidx.camera:camera-view:${cameraxVersion}")
+
+    // It's safe to use 17.0.2 since we excluded vulnerable play-services-basement,
+    // and keep vulnerabilities in barcode-scanning we need.
+    implementation("com.google.mlkit:barcode-scanning:17.0.2") {
+        exclude("com.google.android.gms", "play-services-base")
+        exclude("com.google.android.gms", "play-services-basement")
+        exclude("com.google.android.datatransport", "transport-api")
+        exclude("com.google.android.datatransport", "transport-backend-cct")
+        exclude("com.google.android.datatransport", "transport-runtime")
+        exclude("com.google.firebase", "firebase-encoders-json")
+        exclude("com.google.firebase", "firebase-encoders")
+    }
 
     // TOTP
     implementation("commons-codec:commons-codec:1.16.0")

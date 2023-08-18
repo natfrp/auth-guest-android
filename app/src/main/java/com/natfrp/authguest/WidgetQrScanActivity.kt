@@ -30,6 +30,8 @@ class WidgetQrScanActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_widget_qr_scan)
 
+        MLKitTrickery.init()
+
         viewBinding = ActivityWidgetQrScanBinding.inflate(layoutInflater)
         setContentView(viewBinding.root)
 
