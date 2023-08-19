@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.gradle.plugin.mpp.pm20.util.archivesName
+
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
@@ -17,12 +19,18 @@ android {
         vectorDrawables {
             useSupportLibrary = true
         }
+        archivesName.set("AuthWidget")
     }
 
     buildTypes {
         release {
             isMinifyEnabled = true
             isShrinkResources = true
+
+            ndk {
+                abiFilters.clear()
+                abiFilters.add("arm64-v8a")
+            }
 
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
@@ -51,7 +59,9 @@ android {
         abi {
             isEnable = true
             reset()
-            include("arm64-v8a", "x86")
+            for (abiStr in abiFilters) {
+                include(abiStr)
+            }
             isUniversalApk = false
         }
     }

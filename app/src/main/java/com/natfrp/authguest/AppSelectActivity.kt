@@ -23,6 +23,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.natfrp.authguest.databinding.ActivityAppSelectBinding
+import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.cancel
+import kotlinx.coroutines.launch
 import java.util.Locale
 
 
@@ -31,9 +34,11 @@ class AppSelectActivity : AppCompatActivity() {
     private lateinit var binding: ActivityAppSelectBinding
     private lateinit var list: ListView
     private var items = ArrayList<AppItem>()
+    private val scope = MainScope()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R && ContextCompat.checkSelfPermission(
                 this,
                 Manifest.permission.QUERY_ALL_PACKAGES
@@ -44,21 +49,30 @@ class AppSelectActivity : AppCompatActivity() {
                 this, arrayOf(Manifest.permission.QUERY_ALL_PACKAGES), 0
             )
         }
-        loadPackages()
-
         binding = ActivityAppSelectBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        list = binding.appList
 
-        val adapter = AppListAdapter(this, items)
-        list.adapter = adapter
-        list.onItemClickListener =
-            AdapterView.OnItemClickListener { _: AdapterView<*>, _: View, position: Int, _: Long ->
-                val intent = Intent(this, AppSelectActivity::class.java)
-                intent.putExtra("appPackageName", items[position].packageName)
-                setResult(RESULT_OK, intent)
-                finish()
+        val context = this
+        scope.launch {
+            loadPackages()
+            if (items.size > 0) {
+                list = binding.appList
+                binding.appListWarn.visibility = View.GONE
+                list.visibility = View.VISIBLE
+
+                val adapter = AppListAdapter(context, items)
+                list.adapter = adapter
+                list.onItemClickListener =
+                    AdapterView.OnItemClickListener { _: AdapterView<*>, _: View, position: Int, _: Long ->
+                        val intent = Intent(context, AppSelectActivity::class.java)
+                        intent.putExtra("appPackageName", items[position].packageName)
+                        setResult(RESULT_OK, intent)
+                        finish()
+                    }
+            } else {
+                binding.appListWarn.setText(R.string.no_package_warn)
             }
+        }
     }
 
     private fun loadPackages() {
@@ -104,6 +118,11 @@ class AppSelectActivity : AppCompatActivity() {
             }
         }
         items.sortBy { it.name }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        scope.cancel()
     }
 }
 
