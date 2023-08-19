@@ -17,11 +17,6 @@ android {
         vectorDrawables {
             useSupportLibrary = true
         }
-
-        ndk {
-            abiFilters.clear()
-            abiFilters.add("arm64-v8a")
-        }
     }
 
     buildTypes {
@@ -34,11 +29,7 @@ android {
                 "proguard-rules.pro"
             )
         }
-        debug {
-            ndk {
-                abiFilters.add("x86")
-            }
-        }
+        debug {}
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
@@ -53,6 +44,15 @@ android {
     packaging {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
+        }
+    }
+
+    splits {
+        abi {
+            isEnable = true
+            reset()
+            include("arm64-v8a", "x86")
+            isUniversalApk = false
         }
     }
 }
