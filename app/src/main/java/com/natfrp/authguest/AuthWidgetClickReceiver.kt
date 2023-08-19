@@ -15,6 +15,7 @@ import okhttp3.HttpUrl.Companion.toHttpUrl
 import okhttp3.HttpUrl.Companion.toHttpUrlOrNull
 import okhttp3.OkHttpClient
 import okhttp3.Request
+import java.net.InetAddress
 import java.security.SecureRandom
 import java.security.cert.X509Certificate
 import java.util.concurrent.TimeUnit
@@ -118,7 +119,7 @@ class AuthWidgetClickReceiver : BroadcastReceiver() {
             return
         }
 
-        val url: HttpUrl = try {
+        val tmpUrl: HttpUrl = try {
             "https://${reqData.addr}:${reqData.port}".toHttpUrlOrNull().let { u1 ->
                 u1 ?: "https://${reqData.addr}".toHttpUrlOrNull()
                 ?: "${reqData.addr}:${reqData.port}".toHttpUrlOrNull()
@@ -129,6 +130,9 @@ class AuthWidgetClickReceiver : BroadcastReceiver() {
             return
         }
 
+        val url = HttpUrl.Builder()
+            .host(InetAddress.getByName(tmpUrl.host).hostAddress?.toString() ?: tmpUrl.host)
+            .scheme(tmpUrl.scheme).port(tmpUrl.port).build()
         val requestGet = Request.Builder().url(url).get().build()
         try {
             client.newCall(requestGet).execute().use { response ->
