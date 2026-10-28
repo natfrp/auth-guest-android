@@ -25,6 +25,8 @@
     <string name="add_widget">添加微件</string>
     <string name="app_widget_description">此微件用于快速执行 SakuraFrp 访问认证</string>
     <string name="btn_scan">扫码载入配置</string>
+    <string name="qr_camera_permission_required">需要相机权限才能扫码</string>
+    <string name="qr_scan_hint">将二维码及四周空白对准框内</string>
     <string name="end_icon_app_select">选择启动 APP</string>
     <string name="package_loading">加载中，请稍后。\n\n如果您的应用较多，打开时间可能会很长，此时需要打开应用的话您可以使用 open-app://包名 链接替代。</string>
     <string name="no_package_warn">我们未能为您加载 APP 列表，\n发生此问题的原因通常是您拒绝了应用列表权限的弹窗。\n\n

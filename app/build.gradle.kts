@@ -5,6 +5,19 @@ plugins {
     id("org.jetbrains.kotlin.android")
 }
 
+// Compile the matching upstream wrapper locally for compatibility with Kotlin 1.8.
+val zxingCppNative by configurations.creating {
+    isCanBeConsumed = false
+    isTransitive = false
+}
+val unpackZxingCppNative = tasks.register<Sync>("unpackZxingCppNative") {
+    from(zxingCppNative.elements.map { files -> files.map { zipTree(it.asFile) } })
+    include("jni/**/*.so")
+    eachFile { relativePath = RelativePath(true, *relativePath.segments.drop(1).toTypedArray()) }
+    includeEmptyDirs = false
+    into(layout.buildDirectory.dir("generated/zxingcpp/jniLibs"))
+}
+
 android {
     namespace = "com.natfrp.authguest"
     compileSdk = 34
@@ -15,6 +28,7 @@ android {
         targetSdk = 33
         versionCode = 3
         versionName = "1.2"
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
         vectorDrawables {
             useSupportLibrary = true
@@ -37,7 +51,11 @@ android {
                 "proguard-rules.pro"
             )
         }
-        debug {}
+        debug {
+            if (providers.gradleProperty("qrTrial").orNull == "true") {
+                applicationIdSuffix = ".qrtrial"
+            }
+        }
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
@@ -48,6 +66,9 @@ android {
     }
     buildFeatures {
         viewBinding = true
+    }
+    sourceSets.getByName("main") {
+        jniLibs.srcDir(layout.buildDirectory.dir("generated/zxingcpp/jniLibs"))
     }
     packaging {
         resources {
@@ -67,6 +88,8 @@ android {
     }
 }
 
+tasks.named("preBuild").configure { dependsOn(unpackZxingCppNative) }
+
 dependencies {
     implementation("androidx.core:core-ktx:1.13.1")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.8.5")
@@ -77,25 +100,13 @@ dependencies {
     implementation("com.squareup.okhttp3:okhttp:4.11.0")
 
     // QRCode Scan
-    implementation("androidx.camera:camera-mlkit-vision:1.3.0-beta02")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
     val cameraxVersion = "1.3.4"
     implementation("androidx.camera:camera-core:${cameraxVersion}")
     implementation("androidx.camera:camera-camera2:${cameraxVersion}")
     implementation("androidx.camera:camera-lifecycle:${cameraxVersion}")
     implementation("androidx.camera:camera-view:${cameraxVersion}")
-
-    // It's safe to use 17.0.2 since we excluded vulnerable play-services-basement,
-    // and keep vulnerabilities in barcode-scanning we need.
-    implementation("com.google.mlkit:barcode-scanning:17.0.2") {
-        exclude("com.google.android.gms", "play-services-base")
-        exclude("com.google.android.gms", "play-services-basement")
-        exclude("com.google.android.datatransport", "transport-api")
-        exclude("com.google.android.datatransport", "transport-backend-cct")
-        exclude("com.google.android.datatransport", "transport-runtime")
-        exclude("com.google.firebase", "firebase-encoders-json")
-        exclude("com.google.firebase", "firebase-encoders")
-    }
+    add(zxingCppNative.name, "io.github.zxing-cpp:android:3.1.1@aar")
 
     // TOTP
     implementation("commons-codec:commons-codec:1.16.0")
@@ -103,4 +114,6 @@ dependencies {
     testImplementation("junit:junit:4.13.2")
     testImplementation("com.squareup.okhttp3:mockwebserver:4.11.0")
     testImplementation("com.squareup.okhttp3:okhttp-tls:4.11.0")
+    androidTestImplementation("androidx.test:runner:1.6.2")
+    androidTestImplementation("androidx.test.ext:junit:1.2.1")
 }
