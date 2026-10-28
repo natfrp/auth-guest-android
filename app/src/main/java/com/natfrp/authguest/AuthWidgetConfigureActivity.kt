@@ -30,6 +30,7 @@ class AuthWidgetConfigureActivity : AppCompatActivity() {
     private lateinit var widgetTotp: EditText
     private lateinit var widgetPersist: com.google.android.material.materialswitch.MaterialSwitch
     private lateinit var widgetAlwaysCb: com.google.android.material.materialswitch.MaterialSwitch
+    private lateinit var widgetIgnoreRemoteRedirects: com.google.android.material.materialswitch.MaterialSwitch
     private var onClickListener = View.OnClickListener {
         val context = this@AuthWidgetConfigureActivity
 
@@ -43,7 +44,8 @@ class AuthWidgetConfigureActivity : AppCompatActivity() {
             widgetCall.text.toString(),
             widgetTotp.text.toString(),
             widgetPersist.isChecked,
-            widgetAlwaysCb.isChecked
+            widgetAlwaysCb.isChecked,
+            widgetIgnoreRemoteRedirects.isChecked
         )
 
         val appWidgetManager = AppWidgetManager.getInstance(context)
@@ -75,6 +77,7 @@ class AuthWidgetConfigureActivity : AppCompatActivity() {
         widgetTotp = binding.widgetTotp.editText!!
         widgetPersist = binding.widgetPersist
         widgetAlwaysCb = binding.widgetAlwayscb
+        widgetIgnoreRemoteRedirects = binding.widgetIgnoreRemoteRedirects
         binding.addButton.setOnClickListener(onClickListener)
         binding.fab.setOnClickListener(scanCodeClick)
 

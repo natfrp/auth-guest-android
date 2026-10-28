@@ -99,4 +99,8 @@ dependencies {
 
     // TOTP
     implementation("commons-codec:commons-codec:1.16.0")
+
+    testImplementation("junit:junit:4.13.2")
+    testImplementation("com.squareup.okhttp3:mockwebserver:4.11.0")
+    testImplementation("com.squareup.okhttp3:okhttp-tls:4.11.0")
 }

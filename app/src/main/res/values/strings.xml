@@ -20,6 +20,8 @@
     <string name="widget_totp">一次性密码信息, 可留空</string>
     <string name="widget_persist">记住认证, 开启后不受超时影响</string>
     <string name="widget_alwayscb">连接错误也打开后续链接(如重复认证时)</string>
+    <string name="widget_ignore_remote_redirects">不打开远端后续链接</string>
+    <string name="widget_redirect_priority">优先打开本地配置的后续链接。仅在关闭此选项且本地链接为空时，才打开远端链接。</string>
     <string name="add_widget">添加微件</string>
     <string name="app_widget_description">此微件用于快速执行 SakuraFrp 访问认证</string>
     <string name="btn_scan">扫码载入配置</string>

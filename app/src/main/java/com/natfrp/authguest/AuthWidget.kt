@@ -40,6 +40,7 @@ private const val PREF_PERSIST = "_pers"
 private const val PREF_CB = "_cb"
 private const val PREF_CBB = "_cbb"
 private const val PREF_TOTP = "_totp"
+private const val PREF_IGNORE_REMOTE_REDIRECTS = "_ignore_remote_redirects"
 
 class AuthWidgetManager {
     companion object {
@@ -85,7 +86,8 @@ class AuthWidgetManager {
             callback: String,
             totp: String,
             persist: Boolean,
-            alwaysCb: Boolean
+            alwaysCb: Boolean,
+            ignoreRemoteRedirects: Boolean = true
         ) {
             val prefs = context.getSharedPreferences(PREFS_NAME, 0).edit()
             prefs.putString(PREF_PREFIX_KEY + appWidgetId, name)
@@ -96,6 +98,8 @@ class AuthWidgetManager {
             prefs.putString(PREF_PREFIX_KEY + appWidgetId + PREF_TOTP, totp)
             prefs.putBoolean(PREF_PREFIX_KEY + appWidgetId + PREF_PERSIST, persist)
             prefs.putBoolean(PREF_PREFIX_KEY + appWidgetId + PREF_CBB, alwaysCb)
+            prefs.putBoolean(PREF_PREFIX_KEY + appWidgetId + PREF_IGNORE_REMOTE_REDIRECTS,
+                ignoreRemoteRedirects)
             prefs.apply()
         }
 
@@ -115,7 +119,8 @@ class AuthWidgetManager {
                 prefs.getString(PREF_PREFIX_KEY + appWidgetId + PREF_CB, "") ?: return null,
                 prefs.getString(PREF_PREFIX_KEY + appWidgetId + PREF_TOTP, "") ?: return null,
                 prefs.getBoolean(PREF_PREFIX_KEY + appWidgetId + PREF_PERSIST, true),
-                prefs.getBoolean(PREF_PREFIX_KEY + appWidgetId + PREF_CBB, false)
+                prefs.getBoolean(PREF_PREFIX_KEY + appWidgetId + PREF_CBB, false),
+                prefs.getBoolean(PREF_PREFIX_KEY + appWidgetId + PREF_IGNORE_REMOTE_REDIRECTS, true)
             )
         }
 
@@ -134,5 +139,13 @@ class AuthRequest(
     val callback: String,
     val totp: String,
     val persist: Boolean,
-    val alwaysCb: Boolean
-)
+    val alwaysCb: Boolean,
+    val ignoreRemoteRedirects: Boolean = true
+) {
+    /** Local callbacks take precedence; remote URLs require an explicit local opt-in. */
+    internal fun destinationFor(result: AuthResult): String? {
+        if (result !is AuthResult.Success && !alwaysCb) return null
+        return callback.takeIf { it.isNotBlank() }
+            ?: if (!ignoreRemoteRedirects) (result as? AuthResult.Success)?.destination else null
+    }
+}
